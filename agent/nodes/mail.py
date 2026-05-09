@@ -15,4 +15,3 @@ def run(state: dict) -> dict:
     )
     response = sg.send(message)
     print(f"[mail] sent — HTTP {response.status_code}")
-    return {"status": "success"}

@@ -21,7 +21,7 @@ def run(state: dict) -> dict:
             topic="news",
             days=1,
             search_depth="basic",
-            max_results=6,
+            max_results=8,
         )
         for article in results.get("results", []):
             if article["url"] not in seen_urls:

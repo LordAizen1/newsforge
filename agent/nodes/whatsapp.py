@@ -34,4 +34,4 @@ def run(state: dict) -> dict:
     for i, chunk in enumerate(chunks, 1):
         msg = client.messages.create(from_=from_number, to=to_number, body=chunk)
         print(f"[whatsapp] chunk {i}/{len(chunks)} sent — sid {msg.sid}")
-    return {"status": "success"}
+    print(f"[whatsapp] all chunks sent")

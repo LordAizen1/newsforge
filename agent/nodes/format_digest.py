@@ -9,12 +9,12 @@ CATEGORY_EMOJI = {"advancements": "🚀", "risks": "⚠️", "news": "📰"}
 CATEGORY_LABEL = {"advancements": "ADVANCEMENTS", "risks": "RISKS & BAD NEWS", "news": "MAJOR NEWS"}
 
 
-def _group(sections: list) -> dict:
+def _group(sections: list, per_category: int = 3) -> dict:
     grouped = {"advancements": [], "risks": [], "news": []}
     for s in sections:
         cat = s.get("category", "news")
         grouped.setdefault(cat, []).append(s)
-    return grouped
+    return {cat: items[:per_category] for cat, items in grouped.items()}
 
 
 def _whatsapp_text(sections: list, today: str) -> str:

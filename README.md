@@ -1,6 +1,6 @@
 # newsforge
 
-A small autonomous agent that wakes up every morning, scans the web for the latest AI and tech news, and sends you a clean digest directly to your email or WhatsApp. No dashboards, no feeds to check, no manual work.
+A small autonomous agent that wakes up every morning, scans the web for the latest AI and tech news, and sends you a clean digest to your email or WhatsApp. No dashboards, no feeds to check, no manual work.
 
 ---
 
@@ -8,11 +8,12 @@ A small autonomous agent that wakes up every morning, scans the web for the late
 
 Every day at 7am IST, a GitHub Actions workflow kicks off a LangGraph pipeline that:
 
-1. Searches the web for fresh AI and tech news using Tavily
+1. Searches the web for fresh AI and tech news using Tavily (fetches ~40 raw articles)
 2. Filters out noise and low-signal content using GPT-4o-mini
 3. Categorizes each article into advancements, risks, or major news
 4. Writes a sharp 2-sentence summary for each one
-5. Delivers the digest to your email (SendGrid) and/or WhatsApp (Twilio)
+5. Picks the top 3 from each category so every digest is consistent
+6. Delivers the digest to your email (SendGrid) and/or WhatsApp (Twilio)
 
 Total running cost: under $0.20 a month.
 
@@ -20,23 +21,25 @@ Total running cost: under $0.20 a month.
 
 ## sample output
 
+The email uses Oswald for headers and DM Sans for body text, with a dark header, colored section dots, and numbered articles. Each section always has exactly 3 stories.
+
 ```
-Your Daily AI Digest — Tuesday, May 6, 2026
+newsforge                              Tuesday, May 6, 2026
 
-🚀 ADVANCEMENTS
-• Meta releases open-source Llama 4 Scout
-  Beats GPT-4o on most coding benchmarks and runs on a single A100.
-  Released under a permissive license, it's already shipping in VS Code extensions.
+● ADVANCEMENTS
+01  Meta releases open-source Llama 4 Scout
+    Beats GPT-4o on most coding benchmarks and runs on a single A100.
+    Released under a permissive license, it's already shipping in VS Code extensions.
 
-⚠️ RISKS & BAD NEWS
-• EU AI Act enforcement begins with first formal warnings
-  Three companies flagged for non-compliant hiring tools, facing fines up to 3% of global revenue.
-  This marks the first real teeth of the Act being used in practice.
+02  ...
 
-📰 MAJOR NEWS
-• Anthropic closes $3B Series F
-  Round led by Google at a $40B valuation, funding enterprise expansion.
-  Capital will go toward infrastructure and continued safety research.
+● RISKS & BAD NEWS
+01  EU AI Act enforcement begins with first formal warnings
+    Three companies flagged for non-compliant hiring tools.
+    This marks the first real enforcement action under the Act.
+
+● MAJOR NEWS
+01  ...
 ```
 
 ---

@@ -4,39 +4,197 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>NewsForge Daily Digest</title>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
   <style>
-    body { margin: 0; padding: 0; background: #f4f4f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #1a1a1a; }
-    .wrapper { max-width: 620px; margin: 32px auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
-    .header { background: #0f0f0f; padding: 28px 32px; }
-    .header h1 { margin: 0; font-size: 22px; font-weight: 700; color: #ffffff; letter-spacing: -0.3px; }
-    .header p { margin: 6px 0 0; font-size: 13px; color: #888; }
-    .section { padding: 24px 32px 8px; }
-    .section-title { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: #666; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 16px; }
-    .article { margin-bottom: 20px; }
-    .article-title { font-size: 15px; font-weight: 600; color: #0f0f0f; margin: 0 0 6px; line-height: 1.4; }
-    .article-title a { color: inherit; text-decoration: none; }
-    .article-title a:hover { text-decoration: underline; }
-    .article-summary { font-size: 14px; color: #444; line-height: 1.6; margin: 0; }
-    .footer { background: #f4f4f5; padding: 20px 32px; text-align: center; font-size: 12px; color: #999; }
-    .advancements .section-title { color: #16a34a; }
-    .risks .section-title { color: #dc2626; }
-    .news .section-title { color: #2563eb; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #f0f0f0;
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #1a1a1a;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrapper {
+      max-width: 600px;
+      margin: 40px auto;
+      background: #ffffff;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+    }
+
+    /* header */
+    .header {
+      background: #0d0d0d;
+      padding: 32px 40px;
+    }
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+    .logo {
+      font-family: 'Oswald', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .logo span {
+      color: #a3e635;
+    }
+    .date-badge {
+      font-size: 11px;
+      font-weight: 500;
+      color: #555;
+      background: #1a1a1a;
+      padding: 4px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.3px;
+    }
+    .header-sub {
+      font-size: 13px;
+      color: #555;
+      margin-top: 4px;
+    }
+
+    /* section */
+    .section {
+      padding: 28px 40px 12px;
+      border-bottom: 1px solid #f0f0f0;
+    }
+    .section:last-of-type {
+      border-bottom: none;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+    .section-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .advancements .section-dot { background: #a3e635; }
+    .risks .section-dot        { background: #f87171; }
+    .news .section-dot         { background: #60a5fa; }
+
+    .section-label {
+      font-family: 'Oswald', sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+    }
+    .advancements .section-label { color: #65a30d; }
+    .risks .section-label        { color: #dc2626; }
+    .news .section-label         { color: #2563eb; }
+
+    .section-count {
+      margin-left: auto;
+      font-size: 10px;
+      font-weight: 600;
+      color: #bbb;
+      letter-spacing: 0.5px;
+    }
+
+    /* article */
+    .article {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #f7f7f7;
+    }
+    .article:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .article-number {
+      font-size: 11px;
+      font-weight: 700;
+      color: #ddd;
+      min-width: 20px;
+      padding-top: 2px;
+      letter-spacing: 0.5px;
+    }
+
+    .article-body { flex: 1; }
+
+    .article-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #0d0d0d;
+      line-height: 1.45;
+      margin-bottom: 6px;
+    }
+    .article-title a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .article-title a:hover {
+      text-decoration: underline;
+    }
+
+    .article-summary {
+      font-size: 13px;
+      color: #666;
+      line-height: 1.65;
+    }
+
+    /* footer */
+    .footer {
+      padding: 20px 40px;
+      background: #fafafa;
+      border-top: 1px solid #f0f0f0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-left {
+      font-size: 11px;
+      color: #bbb;
+    }
+    .footer-right {
+      font-size: 11px;
+      color: #ddd;
+    }
   </style>
 </head>
 <body>
   <div class="wrapper">
+
     <div class="header">
-      <h1>⚡ NewsForge</h1>
-      <p>Your Daily AI + Tech Digest — {{ today }}</p>
+      <div class="header-top">
+        <div class="logo">news<span>forge</span></div>
+        <div class="date-badge">{{ today }}</div>
+      </div>
+      <div class="header-sub">Your daily AI + tech digest, ready before you start your day.</div>
     </div>
 
     {% if advancements %}
     <div class="section advancements">
-      <div class="section-title">🚀 Advancements</div>
+      <div class="section-header">
+        <div class="section-dot"></div>
+        <div class="section-label">Advancements</div>
+        <div class="section-count">{{ advancements|length }} stories</div>
+      </div>
       {% for item in advancements %}
       <div class="article">
-        <p class="article-title"><a href="{{ item.url }}">{{ item.title }}</a></p>
-        <p class="article-summary">{{ item.summary }}</p>
+        <div class="article-number">0{{ loop.index }}</div>
+        <div class="article-body">
+          <div class="article-title"><a href="{{ item.url }}">{{ item.title }}</a></div>
+          <div class="article-summary">{{ item.summary }}</div>
+        </div>
       </div>
       {% endfor %}
     </div>
@@ -44,11 +202,18 @@
 
     {% if risks %}
     <div class="section risks">
-      <div class="section-title">⚠️ Risks &amp; Bad News</div>
+      <div class="section-header">
+        <div class="section-dot"></div>
+        <div class="section-label">Risks &amp; Bad News</div>
+        <div class="section-count">{{ risks|length }} stories</div>
+      </div>
       {% for item in risks %}
       <div class="article">
-        <p class="article-title"><a href="{{ item.url }}">{{ item.title }}</a></p>
-        <p class="article-summary">{{ item.summary }}</p>
+        <div class="article-number">0{{ loop.index }}</div>
+        <div class="article-body">
+          <div class="article-title"><a href="{{ item.url }}">{{ item.title }}</a></div>
+          <div class="article-summary">{{ item.summary }}</div>
+        </div>
       </div>
       {% endfor %}
     </div>
@@ -56,19 +221,28 @@
 
     {% if news %}
     <div class="section news">
-      <div class="section-title">📰 Major News</div>
+      <div class="section-header">
+        <div class="section-dot"></div>
+        <div class="section-label">Major News</div>
+        <div class="section-count">{{ news|length }} stories</div>
+      </div>
       {% for item in news %}
       <div class="article">
-        <p class="article-title"><a href="{{ item.url }}">{{ item.title }}</a></p>
-        <p class="article-summary">{{ item.summary }}</p>
+        <div class="article-number">0{{ loop.index }}</div>
+        <div class="article-body">
+          <div class="article-title"><a href="{{ item.url }}">{{ item.title }}</a></div>
+          <div class="article-summary">{{ item.summary }}</div>
+        </div>
       </div>
       {% endfor %}
     </div>
     {% endif %}
 
     <div class="footer">
-      Delivered by NewsForge · Powered by GPT-4o-mini + Tavily
+      <div class="footer-left">newsforge · automated daily digest</div>
+      <div class="footer-right">gpt-4o-mini + tavily</div>
     </div>
+
   </div>
 </body>
 </html>
