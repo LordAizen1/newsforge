@@ -19,6 +19,31 @@ Total running cost: under $0.20 a month.
 
 ---
 
+## how it works
+
+```mermaid
+graph LR
+    GHA["⏰ GitHub Actions\n7am IST"] --> S
+
+    subgraph LangGraph Pipeline
+        S["🔍 Search"] --> F["🧹 Filter"]
+        F --> C["🏷️ Categorize"]
+        C --> SU["✍️ Summarize"]
+        SU --> FO["📄 Format\ntop 3 per category"]
+        FO --> ME["📬 Email"]
+        FO --> MW["💬 WhatsApp"]
+    end
+
+    S -->|"~40 articles"| F
+    F -->|"~15 kept"| C
+    C -->|"tagged"| SU
+    SU -->|"summarized"| FO
+    ME -->|"SendGrid"| DONE["✅"]
+    MW -->|"Twilio"| DONE
+```
+
+---
+
 ## sample output
 
 The email uses Oswald for headers and DM Sans for body text, with a dark header, colored section dots, and numbered articles. Each section always has exactly 3 stories.
