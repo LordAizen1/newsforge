@@ -8,12 +8,14 @@ A small autonomous agent that wakes up every morning, scans the web for the late
 
 Every day at 7am IST, a GitHub Actions workflow kicks off a LangGraph pipeline that:
 
-1. Searches the web for fresh AI and tech news using Tavily (fetches ~40 raw articles)
-2. Filters out noise and low-signal content using GPT-4o-mini
-3. Categorizes each article into advancements, risks, or major news
-4. Writes a sharp 2-sentence summary for each one
-5. Picks the top 3 from each category so every digest is consistent
-6. Delivers the digest to your email (SendGrid) and/or WhatsApp (Twilio)
+1. Reads yesterday's feedback verdict (liked / disliked / none) from a Railway server
+2. Searches the web for fresh AI and tech news using Tavily (fetches ~40 raw articles)
+3. Filters out noise and low-signal content using GPT-4o-mini, tuned by yesterday's feedback
+4. Categorizes each article into advancements, risks, or major news
+5. Writes a sharp 2-sentence summary for each one
+6. Picks the top 3 from each category so every digest is consistent
+7. Delivers the digest to your email (SendGrid) and/or WhatsApp (Twilio)
+8. Email includes like/dislike buttons that feed back into tomorrow's filter
 
 Total running cost: under $0.20 a month.
 
@@ -26,20 +28,22 @@ graph LR
     GHA["⏰ GitHub Actions\n7am IST"] --> S
 
     subgraph LangGraph Pipeline
-        S["🔍 Search"] --> F["🧹 Filter"]
+        S["🔍 Search"] --> F["🧹 Filter\n(feedback-tuned)"]
         F --> C["🏷️ Categorize"]
         C --> SU["✍️ Summarize"]
         SU --> FO["📄 Format\ntop 3 per category"]
-        FO --> ME["📬 Email"]
+        FO --> ME["📬 Email\n(like/dislike buttons)"]
         FO --> MW["💬 WhatsApp"]
     end
 
+    FB["🗳️ Railway\nFeedback Server"] -->|"yesterday's verdict"| S
     S -->|"~40 articles"| F
     F -->|"~15 kept"| C
     C -->|"tagged"| SU
     SU -->|"summarized"| FO
     ME -->|"SendGrid"| DONE["✅"]
     MW -->|"Twilio"| DONE
+    ME -->|"click"| FB
 ```
 
 ---
@@ -82,6 +86,7 @@ newsforge                              Tuesday, May 6, 2026
 | SendGrid | email delivery |
 | Twilio | WhatsApp delivery |
 | GitHub Actions | daily cron scheduling |
+| FastAPI + Railway | feedback server (like/dislike verdicts) |
 
 ---
 
@@ -165,13 +170,25 @@ newsforge/
 
 ---
 
+## feedback loop
+
+Every email includes a "👍 good" and "👎 not great" button at the bottom. Clicking either records a verdict on a FastAPI server running on Railway. The next morning, before filtering, the agent reads yesterday's verdict:
+
+- **liked**: keeps the same tone and topic mix
+- **disliked**: raises the bar, focuses only on high-impact stories
+- **no click**: behaves as normal
+
+The feedback server lives at a separate repo (`newsforge-feedback`) and has no secrets or API keys. It just writes to a local JSON file.
+
+---
+
 ## extending it
 
 A few ideas if you want to take it further:
 
 - **Custom topics**: add a config file to define your own search queries (biotech, fintech, robotics)
 - **Slack delivery**: swap or add a Slack node using the Bolt SDK
-- **Preference memory**: store which articles you found useful and re-rank future digests
+- **Per-article feedback**: track which categories you click through most and weight future searches
 - **Observability**: wire in LangSmith to trace each node's timing and output
 
 ---
