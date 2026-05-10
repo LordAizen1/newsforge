@@ -22,7 +22,6 @@
       width: 100%;
       margin: 32px auto;
       border-radius: 16px;
-      overflow: hidden;
       box-shadow: 0 8px 32px rgba(0,0,0,0.10);
     }
 
@@ -30,19 +29,15 @@
     .topbar {
       height: 4px;
       background: linear-gradient(90deg, #22c55e 0%, #3b82f6 50%, #ef4444 100%);
+      border-radius: 16px 16px 0 0;
+      font-size: 0;
+      line-height: 0;
     }
 
     /* header */
     .header {
       background: #0f172a;
       padding: 28px 36px 24px;
-    }
-
-    .header-row {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 12px;
     }
 
     .logo {
@@ -53,9 +48,6 @@
     }
     .logo span { color: #22c55e; }
 
-    .header-date {
-      text-align: right;
-    }
     .date-eyebrow {
       font-size: 10px;
       font-weight: 600;
@@ -89,15 +81,6 @@
       padding: 26px 36px 20px;
     }
 
-    .section-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 14px;
-      padding-bottom: 12px;
-      border-bottom: 1px solid #e2e8f0;
-    }
-
     .section-tag {
       font-size: 10px;
       font-weight: 700;
@@ -106,7 +89,6 @@
       padding: 4px 10px;
       border-radius: 5px;
     }
-
     .advancements .section-tag { background: #dcfce7; color: #15803d; }
     .risks .section-tag        { background: #fee2e2; color: #b91c1c; }
     .news .section-tag         { background: #dbeafe; color: #1d4ed8; }
@@ -114,33 +96,32 @@
     .section-count {
       font-size: 11px;
       color: #94a3b8;
-      margin-left: auto;
       font-weight: 500;
     }
 
-    /* card */
+    .section-rule {
+      height: 1px;
+      background: #e2e8f0;
+      border: none;
+      margin: 12px 0 14px;
+    }
+
+    /* card — no flexbox, border-left does the colored stripe */
     .card {
       background: #ffffff;
       border-radius: 10px;
       border: 1px solid #e2e8f0;
+      border-left-width: 4px;
       margin-bottom: 10px;
-      overflow: hidden;
-      display: flex;
     }
     .card:last-child { margin-bottom: 0; }
 
-    .card-bar {
-      width: 4px;
-      flex-shrink: 0;
-    }
-    .advancements .card-bar { background: #22c55e; }
-    .risks .card-bar        { background: #ef4444; }
-    .news .card-bar         { background: #3b82f6; }
+    .advancements .card { border-left-color: #22c55e; }
+    .risks .card        { border-left-color: #ef4444; }
+    .news .card         { border-left-color: #3b82f6; }
 
     .card-inner {
       padding: 15px 18px;
-      flex: 1;
-      min-width: 0;
     }
 
     .card-num {
@@ -159,10 +140,7 @@
       margin-bottom: 6px;
       word-wrap: break-word;
     }
-    .card-title a {
-      color: inherit;
-      text-decoration: none;
-    }
+    .card-title a { color: inherit; text-decoration: none; }
     .card-title a:hover { text-decoration: underline; }
 
     .card-summary {
@@ -177,6 +155,7 @@
       height: 1px;
       background: #e2e8f0;
       margin: 0 36px;
+      border: none;
     }
 
     /* feedback */
@@ -192,11 +171,6 @@
       font-weight: 500;
       margin-bottom: 12px;
     }
-    .feedback-buttons {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-    }
     .feedback-btn {
       display: inline-block;
       padding: 9px 22px;
@@ -207,30 +181,28 @@
       background: #ffffff;
       border: 1px solid #e2e8f0;
       color: #475569;
+      margin: 0 5px;
     }
 
     /* footer */
     .footer {
       background: #0f172a;
       padding: 16px 36px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 6px;
+      border-radius: 0 0 16px 16px;
     }
     .footer-left  { font-size: 11px; color: #475569; }
     .footer-right { font-size: 11px; color: #334155; }
 
     /* mobile */
     @media only screen and (max-width: 620px) {
-      .wrapper { margin: 0 !important; border-radius: 0 !important; width: 100% !important; }
-      .header  { padding: 22px 20px 18px !important; }
-      .section { padding: 20px 20px 14px !important; }
-      .rule    { margin: 0 20px !important; }
+      .wrapper  { margin: 0 !important; border-radius: 0 !important; width: 100% !important; }
+      .topbar   { border-radius: 0 !important; }
+      .header   { padding: 22px 20px 18px !important; }
+      .section  { padding: 20px 20px 14px !important; }
+      .rule     { margin: 0 20px !important; }
       .feedback { padding: 18px 20px !important; }
-      .footer  { padding: 14px 20px !important; }
-      .logo    { font-size: 19px !important; }
+      .footer   { padding: 14px 20px !important; border-radius: 0 !important; }
+      .logo     { font-size: 19px !important; }
       .card-title   { font-size: 13px !important; }
       .card-summary { font-size: 12px !important; }
     }
@@ -239,16 +211,21 @@
 <body>
   <div class="wrapper">
 
-    <div class="topbar"></div>
+    <div class="topbar">&nbsp;</div>
 
+    <!-- header: table layout so Gmail doesn't break the logo/date row -->
     <div class="header">
-      <div class="header-row">
-        <div class="logo">news<span>forge</span></div>
-        <div class="header-date">
-          <div class="date-eyebrow">Daily Digest</div>
-          <div class="date-value">{{ today }}</div>
-        </div>
-      </div>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td valign="middle">
+            <div class="logo">news<span>forge</span></div>
+          </td>
+          <td valign="middle" align="right">
+            <div class="date-eyebrow">Daily Digest</div>
+            <div class="date-value">{{ today }}</div>
+          </td>
+        </tr>
+      </table>
       <div class="header-tagline">Your AI + tech briefing, delivered before you start your day.</div>
     </div>
 
@@ -256,13 +233,16 @@
 
       {% if advancements %}
       <div class="section advancements">
-        <div class="section-header">
-          <span class="section-tag">Advancements</span>
-          <span class="section-count">{{ advancements|length }} stories</span>
-        </div>
+        <!-- section header: table so the count aligns right reliably -->
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td valign="middle"><span class="section-tag">Advancements</span></td>
+            <td valign="middle" align="right"><span class="section-count">{{ advancements|length }} stories</span></td>
+          </tr>
+        </table>
+        <hr class="section-rule" />
         {% for item in advancements %}
         <div class="card">
-          <div class="card-bar"></div>
           <div class="card-inner">
             <div class="card-num">0{{ loop.index }}</div>
             <div class="card-title"><a href="{{ item.url }}">{{ item.title }}</a></div>
@@ -273,17 +253,19 @@
       </div>
       {% endif %}
 
-      {% if advancements and risks %}<div class="rule"></div>{% endif %}
+      {% if advancements and risks %}<hr class="rule" />{% endif %}
 
       {% if risks %}
       <div class="section risks">
-        <div class="section-header">
-          <span class="section-tag">Risks &amp; Bad News</span>
-          <span class="section-count">{{ risks|length }} stories</span>
-        </div>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td valign="middle"><span class="section-tag">Risks &amp; Bad News</span></td>
+            <td valign="middle" align="right"><span class="section-count">{{ risks|length }} stories</span></td>
+          </tr>
+        </table>
+        <hr class="section-rule" />
         {% for item in risks %}
         <div class="card">
-          <div class="card-bar"></div>
           <div class="card-inner">
             <div class="card-num">0{{ loop.index }}</div>
             <div class="card-title"><a href="{{ item.url }}">{{ item.title }}</a></div>
@@ -294,17 +276,19 @@
       </div>
       {% endif %}
 
-      {% if risks and news %}<div class="rule"></div>{% endif %}
+      {% if risks and news %}<hr class="rule" />{% endif %}
 
       {% if news %}
       <div class="section news">
-        <div class="section-header">
-          <span class="section-tag">Major News</span>
-          <span class="section-count">{{ news|length }} stories</span>
-        </div>
+        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td valign="middle"><span class="section-tag">Major News</span></td>
+            <td valign="middle" align="right"><span class="section-count">{{ news|length }} stories</span></td>
+          </tr>
+        </table>
+        <hr class="section-rule" />
         {% for item in news %}
         <div class="card">
-          <div class="card-bar"></div>
           <div class="card-inner">
             <div class="card-num">0{{ loop.index }}</div>
             <div class="card-title"><a href="{{ item.url }}">{{ item.title }}</a></div>
@@ -319,15 +303,20 @@
 
     <div class="feedback">
       <div class="feedback-label">how was today's digest?</div>
-      <div class="feedback-buttons">
+      <div>
         <a class="feedback-btn" href="https://newsforge-feedback-production.up.railway.app/feedback?verdict=liked">👍 good</a>
         <a class="feedback-btn" href="https://newsforge-feedback-production.up.railway.app/feedback?verdict=disliked">👎 not great</a>
       </div>
     </div>
 
+    <!-- footer: table so left/right text aligns reliably -->
     <div class="footer">
-      <div class="footer-left">newsforge · automated daily digest</div>
-      <div class="footer-right">gpt-4o-mini + tavily</div>
+      <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+          <td><span class="footer-left">newsforge · automated daily digest</span></td>
+          <td align="right"><span class="footer-right">gpt-4o-mini + tavily</span></td>
+        </tr>
+      </table>
     </div>
 
   </div>
