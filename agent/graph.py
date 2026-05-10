@@ -1,4 +1,5 @@
 import os
+import requests
 from dotenv import load_dotenv
 
 load_dotenv()  # must run before node imports so env vars are set at module init
@@ -12,6 +13,19 @@ from agent.nodes import summarize
 from agent.nodes import format_digest
 from agent.nodes import mail
 from agent.nodes import whatsapp
+
+FEEDBACK_URL = "https://newsforge-feedback-production.up.railway.app"
+
+
+def fetch_feedback() -> str:
+    try:
+        r = requests.get(f"{FEEDBACK_URL}/feedback/yesterday", timeout=5)
+        verdict = r.json().get("verdict", "none")
+        print(f"[feedback] yesterday: {verdict}")
+        return verdict
+    except Exception:
+        print("[feedback] could not reach feedback server, defaulting to none")
+        return "none"
 
 
 def route_delivery(state: DigestState):
@@ -48,5 +62,5 @@ def build_graph():
 
 if __name__ == "__main__":
     app = build_graph()
-    result = app.invoke({})
+    result = app.invoke({"feedback": fetch_feedback()})
     print("Pipeline complete.")
